@@ -8,6 +8,8 @@ if (document.readyState !== "loading") {
   });
 }
 
+const breeds = ["finnish", "komondor", "rottweiler", "sheepdog", "wolfhound"];
+
 function initializeCode() {
   createWikiItem();
   createWikiItem();
@@ -16,37 +18,55 @@ function initializeCode() {
   createWikiItem();
 }
 
-function createWikiItem() {
-  const container = document.querySelector(".container");
+function fetchDogs() {
+  breeds.forEach(async (breed) => {
+    const url = "https://dog.ceo/api/breed/" + breed + "/images/random";
+    const promise = await fetch(url);
+    const JSON = await promise.json();
 
-  let wikiItem = document.createElement("div");
-  wikiItem.classList.add("wiki-item");
+    const imgSrc = JSON.message;
 
-  let header = document.createElement("h1");
-  header.classList.add("wiki-header");
-  header.innerText = "Breed X";
+    const newUrl = new URL(imgSrc);
+    const name = newUrl.pathname.split("/")[2].split("-");
 
-  let content = document.createElement("div");
-  content.classList.add("wiki-content");
+    const container = document.querySelector(".container");
 
-  let text = document.createElement("p");
-  text.classList.add("wiki-text");
-  text.innerText = "Some text about this breed.";
+    let wikiItem = document.createElement("div");
+    wikiItem.classList.add("wiki-item");
 
-  let imgContainer = document.createElement("div");
-  imgContainer.classList.add("img-container");
+    let header = document.createElement("h1");
+    header.classList.add("wiki-header");
+    if (typeof name[1] !== "undefined") {
+      header.innerText = name[0] + ", " + name[1];
+    } else {
+      header.innerText = name[0];
+    }
 
-  let img = document.createElement("img");
-  img.classList.add("wiki-img");
-  img.setAttribute("src", "");
+    let content = document.createElement("div");
+    content.classList.add("wiki-content");
 
-  imgContainer.appendChild(img);
+    let text = document.createElement("p");
+    text.classList.add("wiki-text");
+    text.innerText = "Some text about this breed.";
 
-  content.appendChild(text);
-  content.appendChild(imgContainer);
+    let imgContainer = document.createElement("div");
+    imgContainer.classList.add("img-container");
 
-  wikiItem.appendChild(header);
-  wikiItem.appendChild(content);
+    let img = document.createElement("img");
+    img.classList.add("wiki-img");
+    img.setAttribute("src", imgSrc);
 
-  container.appendChild(wikiItem);
+    imgContainer.appendChild(img);
+
+    content.appendChild(text);
+    content.appendChild(imgContainer);
+
+    wikiItem.appendChild(header);
+    wikiItem.appendChild(content);
+
+    container.appendChild(wikiItem);
+  });
 }
+fetchDogs();
+
+function createWikiItem() {}
