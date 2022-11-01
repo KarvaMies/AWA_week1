@@ -21,3 +21,35 @@ body {
 .wiki-content {
   padding: 10px;
 }
+
+@media (min-width: 600px) {
+  .wiki-content {
+    display: flex;
+    flex-flow: row-reverse;
+  }
+
+  .img-container,
+  .wiki-text {
+    min-width: 50%;
+    max-width: 50%;
+  }
+}
+
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+/*
+<div class="wiki-item" >
+  <h1 class="wiki-header">Breed X</h1>
+  <div class="wiki-content">
+     <p class="wiki-text">
+       Some text about this breed.
+     </p>
+     <div class="img-container">
+       <img class="wiki-img" src="">
+     </div>
+  </div>
+</div>
+*/
